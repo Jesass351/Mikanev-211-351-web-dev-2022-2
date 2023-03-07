@@ -72,6 +72,15 @@ def generate_access_config(intf_vlan_mapping, access_template):
          'FastEthernet0/14':11,
          'FastEthernet0/16':17}
     access_template - список команд для порта в режиме access
-
     Возвращает список всех портов в режиме access с конфигурацией на основе шаблона
     """
+    list_rezult=[]
+    for k, v in intf_vlan_mapping.items():
+        list_rezult.append('interface '+k)
+        for comand in access_template:
+            if 'access vlan' in comand:
+                list_rezult.append(comand + ' ' + str(v))
+            else:
+                list_rezult.append(comand)
+    return list_rezult
+print(generate_access_config(access_config, access_mode_template))
