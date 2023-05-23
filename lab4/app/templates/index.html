@@ -2,8 +2,9 @@
 
 {% block content %}
 {% if current_user.is_authenticated %}
-Ваш логин: {{ current_user.login }}!
+    Ваш логин: {{ current_user.login }}!
 {% else %}
-Не авторизированный пользователь
+    Не авторизированный пользователь
 {% endif %}
+{{ current_user.is_anonymous }}
 {% endblock %}
