@@ -65,7 +65,7 @@ def phone_checker():
             nums_phone_number = nums_phone_number.rjust(11, "8")
         else:
             if nums_phone_number[0] == 7: 
-                nums_phone_number = nums_phone_number.replace("7", "8")
+                nums_phone_number = "8" + nums_phone_number[1:]
             
         nums_phone_number = f'{nums_phone_number[0]}-{nums_phone_number[1:4]}-{nums_phone_number[4:7]}-{nums_phone_number[7:9]}-{nums_phone_number[9:11]}'
         
