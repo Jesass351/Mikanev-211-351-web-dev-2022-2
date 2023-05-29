@@ -27,7 +27,13 @@ def get_users():
             "id": "1",
             "login": "user",
             "password": "qwerty",
-        }
+        },
+            {
+            "id": "2",
+            "login": "user2",
+            "password": "qwerty",
+        },
+        
     ]
     return users
 
