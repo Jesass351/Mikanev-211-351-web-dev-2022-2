@@ -28,7 +28,7 @@ def get_users():
             "login": "user",
             "password": "qwerty",
         },
-            {
+        {
             "id": "2",
             "login": "user2",
             "password": "qwerty",
