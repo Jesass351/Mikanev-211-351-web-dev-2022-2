@@ -359,6 +359,7 @@ def update_password():
                 errors_res["is_validate"] = 0
         if errors_res.get("is_validate") == 0:
             flash("Проверьте введённые данные", "danger")
+            print(errors_res.get("repeate"))
             return render_template('update_password.html', errors=errors_res, old=old_password, new=new_password)
     
         update_query = "UPDATE users SET password_hash = SHA2(%s, 256) WHERE id = %s;"

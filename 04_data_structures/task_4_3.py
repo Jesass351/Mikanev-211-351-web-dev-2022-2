@@ -23,5 +23,5 @@
 
 config = "switchport trunk allowed vlan 1,3,10,20,30,100"
 vlans = config[config.rfind(" ") + 1:]
-res = vlans.split(",")
-print(res)
+result = vlans.split(",")
+print(result)

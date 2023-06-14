@@ -26,7 +26,7 @@ command2 = "switchport trunk allowed vlan 1,3,8,9"
 vlans1 = command1[command1.rfind(" ")+1:].split(",")
 vlans2 = command2[command2.rfind(" ")+1:].split(",")
 
-vlans = sorted(set(vlans1).intersection(set(vlans2)))
+result = sorted(set(vlans1).intersection(set(vlans2)))
 
 
-print(vlans)
+print(result)

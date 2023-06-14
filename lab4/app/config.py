@@ -24,5 +24,5 @@ ERRORS_USERS = {
         "password_no_lower": "Пароль должен содержать как минимум одну строчную букву",
         "password_no_digit": "Пароль должен содержать как минимум одну цифру",
         "incorrect_password": "Неверный пароль",
-        "incorrect_same_password": "Пароль должен быть таким же"
+        "incorrect_same_password": "Пароли должны совпадать"
     }

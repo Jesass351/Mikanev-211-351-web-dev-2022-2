@@ -1,45 +1,88 @@
-import sys
+# -*- coding: utf-8 -*-
+"""
+Задание 6.3
 
-sys.path.append("..")
+В скрипте сделан генератор конфигурации для access-портов.
+Сделать аналогичный генератор конфигурации для портов trunk.
 
-from pyneng_common_functions import check_pytest
+В транках ситуация усложняется тем, что VLANов может быть много, и надо понимать,
+что с ними делать (добавлять, удалять, перезаписывать).
 
-check_pytest(__loader__, __file__)
+Поэтому в соответствии каждому порту стоит список и первый (нулевой) элемент списка
+указывает как воспринимать номера VLAN, которые идут дальше.
+
+Пример значения и соответствующей команды:
+* ['add', '10', '20'] - команда switchport trunk allowed vlan add 10,20
+* ['del', '17'] - команда switchport trunk allowed vlan remove 17
+* ['only', '11', '30'] - команда switchport trunk allowed vlan 11,30
+
+Задача для портов 0/1, 0/2, 0/4, 0/5, 0/7:
+- сгенерировать конфигурацию на основе шаблона trunk_template
+- с учетом ключевых слов add, del, only
+
+Код не должен привязываться к конкретным номерам портов. То есть,
+если в словаре trunk будут другие номера интерфейсов, код должен работать.
+
+Для данных в словаре trunk_template вывод на
+стандартный поток вывода должен быть таким:
+interface FastEthernet0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan add 10,20
+interface FastEthernet0/2
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 11,30
+interface FastEthernet0/4
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan remove 17
+interface FastEthernet0/5
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan add 10,21
+interface FastEthernet0/7
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 30
 
 
-def test_task(capsys):
-    """
-    Проверка работы задания при вводе access
-    """
-    import task_6_3
+Ограничение: Все задания надо выполнять используя только пройденные темы.
+На стандартный поток вывода надо выводить только команды trunk настройки,
+а access закомментировать.
+"""
 
-    out, err = capsys.readouterr()
-    correct_stdout = (
-        "interface FastEthernet0/1\n"
-        " switchport trunk encapsulation dot1q\n"
-        " switchport mode trunk\n"
-        " switchport trunk allowed vlan add 10,20\n"
-        "interface FastEthernet0/2\n"
-        " switchport trunk encapsulation dot1q\n"
-        " switchport mode trunk\n"
-        " switchport trunk allowed vlan 11,30\n"
-        "interface FastEthernet0/4\n"
-        " switchport trunk encapsulation dot1q\n"
-        " switchport mode trunk\n"
-        " switchport trunk allowed vlan remove 17\n"
-        "interface FastEthernet0/5\n"
-        " switchport trunk encapsulation dot1q\n"
-        " switchport mode trunk\n"
-        " switchport trunk allowed vlan add 10,21\n"
-        "interface FastEthernet0/7\n"
-        " switchport trunk encapsulation dot1q\n"
-        " switchport mode trunk\n"
-        " switchport trunk allowed vlan 30"
-    )
+access_template = [
+    "switchport mode access",
+    "switchport access vlan",
+    "spanning-tree portfast",
+    "spanning-tree bpduguard enable",
+]
 
-    assert (
-        out
-    ), "Ничего не выведено на стандартный поток вывода. Надо не только получить нужный результат, но и вывести его на стандартный поток вывода с помощью print"
-    assert (
-        correct_stdout == out.strip()
-    ), "На стандартный поток вывода выводится неправильный вывод"
+trunk_template = [
+    "switchport trunk encapsulation dot1q",
+    "switchport mode trunk",
+    "switchport trunk allowed vlan",
+]
+
+access = {"0/12": "10", "0/14": "11", "0/16": "17", "0/17": "150"}
+trunk = {
+    "0/1": ["add", "10", "20"],
+    "0/2": ["only", "11", "30"],
+    "0/4": ["del", "17"],
+    "0/5": ["add", "10", "21"],
+    "0/7": ["only", "30"],
+}
+
+for intf, vlan in trunk.items():
+    print('interface FastEthernet' + intf)
+    for command in trunk_template:
+        if command.endswith('allowed vlan'):
+            if vlan[0] is 'add':
+                print(' {} add {}'.format(command, ','.join(vlan[1:])))
+            elif vlan[0] is 'only':
+                print(' {} {}'.format(command, ','.join(vlan[1:])))
+            elif vlan[0] is 'del':
+                print(' {} remove {}'.format(command, ','.join(vlan[1:])))
+        else:
+            print(' {}'.format(command))
