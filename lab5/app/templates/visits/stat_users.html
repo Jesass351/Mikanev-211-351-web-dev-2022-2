@@ -1,4 +1,5 @@
 {% extends 'visits/base.html' %}
+{% from "pagination.html" import pagination %}
 
 {% block tab_content %}
 
@@ -21,6 +22,9 @@
         {% endfor %}
     </tbody>
 </table>
+
+{{pagination(page, page_count, request.endpoint)}}
+
 
 <a class="btn btn-primary mb-3" href="{{ url_for('visits.stat_users', download_csv=True) }}">Экспорт в CSV</a>
 

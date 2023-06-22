@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% from 'pagination.html' import render_pagination %}
+
+{% block content %}
+
+<div class="container mt-5">
+    {% if reviews %}
+    <h3 class="text-center">Отзывы на курс {{ course.name }}</h3>
+    {% for review in reviews %}
+        <div class="container d-flex justify-content-center mb-3">
+            <div class="card w-50">
+                <div class="card-body">
+                  <h5 class="card-title">{{ review.get_creator_full_name() }}<span style="color:rgb(78, 78, 78)">☆{{ review.rating }} </span>  </h5>
+                  <h6 class="card-subtitle mb-2 text-body-secondary"><span style="color:rgb(133, 133, 133)">{{ review.created_at }}</span>  </h6>
+                  <p class="card-text text-break">{{ review.text }}</p>
+                </div>
+              </div>
+        </div>
+    {% endfor %}
+    {% endif %}
+</div>
+<div class="mb-5">
+    {{ render_pagination(pagination, request.endpoint, search_params) }}
+</div>
+
+{% endblock %}
